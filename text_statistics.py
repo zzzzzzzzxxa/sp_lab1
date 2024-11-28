@@ -1,5 +1,6 @@
 import os
 import sys
+from collections import Counter
 
 def read_text(file_name: str) -> str:
     """Читает текст из файла."""
@@ -17,24 +18,18 @@ def process_text(text: str) -> list:
     words = text.translate(translator).lower().split()
     return words
 
-def count_words(words: list) -> dict:
-    """Подсчитывает количество каждого слова."""
-    word_count = {}
-    for word in words:
-        if word in word_count:
-            word_count[word] += 1
-        else:
-            word_count[word] = 1
-    return word_count
+def count_words(words: list) -> Counter:
+    """Подсчитывает количество каждого слова с использованием Counter."""
+    return Counter(words)
 
-def write_report(file_name: str, word_count: dict):
-    """Записывает отчет с подсчетом слов в файл."""
+def write_report(file_name: str, word_count: Counter):
+    """Записывает отчет с подсчетом слов в файл (сортировка от более частых к менее частым)."""
     base_name, ext = os.path.splitext(file_name)
     report_name = f"result/{base_name}_words{ext}"
     os.makedirs("result", exist_ok=True)
-    
+
     with open(report_name, 'w', encoding='utf-8') as file:
-        for word, count in word_count.items():
+        for word, count in word_count.most_common():  # .most_common() сортирует по убыванию
             file.write(f"{word}: {count}\n")
 
 def main():
