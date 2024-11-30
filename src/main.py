@@ -41,6 +41,11 @@ def analyze_text(file_path):
     text = read_text(file_path)
     words = process_text(text)
     
+    # Если слов нет, ничего не делать
+    if not words:
+        print("Текст пуст или не содержит слов!")
+        return
+    
     # Использование Counter для подсчета слов
     word_count = Counter(words)
     output_file = os.path.splitext(file_path)[0] + "_words.txt"
@@ -52,8 +57,12 @@ def analyze_text(file_path):
         "Уникальные слова": len(word_count),
         "Знаков препинания": sum(1 for char in text if char in string.punctuation),
     }
-    for length in range(1, max(len(word) for word in words) + 1):
-        statistics[f"Слова длиной {length}"] = sum(1 for word in words if len(word) == length)
+
+    # Добавляем статистику по длине слов
+    if words:
+        max_length = max(len(word) for word in words)  # Безопасно, потому что words не пуст
+        for length in range(1, max_length + 1):
+            statistics[f"Слова длиной {length}"] = sum(1 for word in words if len(word) == length)
 
     # Сохранение статистики в файл
     stat_file = os.path.splitext(file_path)[0] + "_stat.txt"
@@ -64,3 +73,4 @@ def analyze_text(file_path):
 if __name__ == "__main__":
     file_path = 'example.txt'  # Укажите путь к вашему текстовому файлу
     analyze_text(file_path)
+
