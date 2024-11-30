@@ -69,8 +69,8 @@ def analyze_text(file_path):
     stat_path = os.path.join('result', os.path.basename(stat_file))
     save_statistics(statistics, stat_path)
 
-# Пример запуска функции
+
 if __name__ == "__main__":
-    file_path = 'example.txt'  # Укажите путь к вашему текстовому файлу
+    file_path = 'example.txt'  
     analyze_text(file_path)
 
